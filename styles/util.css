@@ -1,0 +1,60 @@
+.basic {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.select:hover {
+  background-color: lightskyblue;
+}
+
+.formBody {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+
+}
+
+.newline {
+  color: lightgray;
+  padding-top: 1rem;
+  display: block;
+}
+
+.inputField {
+  padding: 1rem;
+  width: 20rem;
+  height: 3rem;
+  font-size: larger;
+}
+
+.buttonItem {
+  background-color: white;
+  position: absolute;
+  top: 90%;
+  left: 40%;
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.274);
+  border-radius: 3px;
+  user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+.navItem {
+  background-color: white;
+  font-size: larger;
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  border: 1px solid rgba(0, 0, 0, 0.274);
+  border-radius: 3px;
+  width: 8rem;
+  height: 3.33rem;
+  justify-content: center;
+  user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
