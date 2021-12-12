@@ -1,10 +1,14 @@
 import type { NextPage } from "next";
-import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import Gun from "gun";
 
+// components
+import Background from "../../util/bg";
+
 const Main: NextPage = () => {
   const gun = Gun();
+  const router = useRouter();
 
   const registerUser = async (event: any) => {
     event.preventDefault();
@@ -14,6 +18,8 @@ const Main: NextPage = () => {
   var [uname, setUname] = useState("");
   var [userPassword, setUserPassword] = useState("");
   var [confirmation, setConfirmation] = useState("");
+
+  var [banner, setBanner] = useState("");
 
   function handleUname(event: any) {
     setUname(event.target.value);
@@ -29,11 +35,7 @@ const Main: NextPage = () => {
 
   return (
     <div className="basic scale">
-      <Image
-      src="/unsplash-bg.jpg"
-      alt="Unsplash Backdrop"
-      layout="fill"
-    />
+      <Background />
       <form onSubmit={registerUser} className="formBody">
         <label htmlFor="uname" className="newline">Username</label>
         <input name="uname" type="text" className="inputField" placeholder="Minimum 6 characters" onChange={handleUname} />
@@ -47,13 +49,22 @@ const Main: NextPage = () => {
           listStyleType: "none",
           margin: "2.5rem",
         }}>
-          <li className="navItem select">Sign in</li>
+          <li className="navItem select" onClick={() => router.push("/user/login")}>Sign in</li>
           <li className="navItem select" style={{ left: "0%" }} onClick={() => {
             if (userPassword === confirmation) {
-              gun.get("user")
+              let userdb = gun.get("userdb");
+              userdb.get(uname).once((data: any, key: any) => {
+                if (data != undefined) {
+                  setBanner("User already exists.");
+                } else {
+                  userdb.get(uname).put({ id: uname, netkey: userPassword });
+                  router.push("/user/login");
+                }
+              });
             }
           }}>Register</li>
         </ul>
+        <h1>{banner}</h1>
       </form>
     </div>
   );
