@@ -9,7 +9,7 @@ const Main: NextPage = () => {
 
   const registerUser = async (event: any) => {
     event.preventDefault();
-    console.log("event")
+    console.log(event)
   }
 
   return (
