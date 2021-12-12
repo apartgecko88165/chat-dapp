@@ -10,7 +10,6 @@
   position: absolute;
   top: 15%;
   left: 50%;
-
 }
 
 .newline {
@@ -35,6 +34,8 @@
   border: 1px solid rgba(0, 0, 0, 0.274);
   border-radius: 3px;
   user-select: none;
+  text-align: center;
+  vertical-align: middle;
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -46,12 +47,14 @@
   font-size: larger;
   position: relative;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: row-reverse;
   border: 1px solid rgba(0, 0, 0, 0.274);
   border-radius: 3px;
   width: 8rem;
   height: 3.33rem;
-  justify-content: center;
+  vertical-align: middle;
   user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
