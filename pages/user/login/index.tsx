@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Gun from "gun";
@@ -14,9 +15,8 @@ const Main: NextPage = () => {
 
   var [uname, setUname] = useState("");
   var [userPassword, setUserPassword] = useState("");
-  var [confirmation, setConfirmation] = useState("");
 
-  var [banner, setBanner] = useState("");
+  var [error, setError] = useState("");
 
   function handleUname(event: any) {
     setUname(event.target.value);
@@ -28,6 +28,11 @@ const Main: NextPage = () => {
 
   return (
     <div className="basic scale">
+      <Image
+        src="/img/bg/unsp-login.jpg"
+        alt="Unsplash image"
+        layout="fill"
+      />
       <form onSubmit={registerUser} className="formBody">
         <label htmlFor="uname" className="newline">Username</label>
         <input name="uname" type="text" className="inputField" placeholder="Minimum 6 characters" onChange={handleUname} />
@@ -39,9 +44,23 @@ const Main: NextPage = () => {
           listStyleType: "none",
           margin: "2.5rem",
         }}>
-          <li className="navItem select">Sign in</li>
+          <li className="navItem select" onClick={() => router.push("/user/signup")}>Register</li>
+          <li className="navItem select" onClick={() => {
+            try {
+              gun.get("userdb").get(uname).get("key").once((data: any) => {
+                if (userPassword === data) {
+                  router.push(`/user/chat/${uname}@${userPassword}`)
+                } else {
+                  setError("Invalid username or password.")
+                }
+              });
+            }
+            catch (err: any) {
+              console.log(err);
+            }
+          }}>Sign in</li>
         </ul>
-        <h1>{banner}</h1>
+        <h2 style={{ color: "red" }}>{error}</h2>;
       </form>
     </div>
   );
