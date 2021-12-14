@@ -20,21 +20,23 @@ const Main: NextPage = () => {
     netkey = data;
   });
 
-  const inbox = [
-    {sender: "bob1234", content: "good mornin'"},
-    {sender: "example4humans", content: "What time is it?"},
-    {sender: "some-person", content: "kaushgdf;aushdg;asudgh;sadg;ksajgbkabdgfhladfffffffffffffffffffffffffffasljdfblasdhgblasjdhflasdgfgaslhdfgalsdhjfglgasdfgashjdfgasldjhfgasjlgdfgajdshfjasljdhfsaghj"}
-  ]
-
+  var inbox: any = [{ the_team: "Welcome to Shift!" }];
+  gun.get("userdb").get(`${uname}`).get("inbox").once((data: any) => {
+    if (data["content"] != undefined) {
+      inbox = data;
+    }
+  });
+  
   var [selection, setSelection] = useState("");
   const [search, setSearch] = useState("");
   const [tagline, setTagline] = useState("");
+  const [conversation, setConversation] = useState("Select something");
 
   function handleSearchInput(event: any) {
     setSearch(event.target.value);
   }
 
-  var messages = inbox.map((msg) => (
+  var messages = inbox.map((msg: any) => (
     <div key={msg.sender} className="select" onClick={() => setSelection(`${uname}&${msg.sender}`)}>
       <h4><p style={{ fontWeight: "normal", display: "inline" }}>from</p> {msg.sender}</h4>
       <div style={{
@@ -75,12 +77,14 @@ const Main: NextPage = () => {
           flexDirection: "column"
         }}>
           <input type="text" style={{ height: "2rem", fontSize: "1.5rem"}} onChange={handleSearchInput}/>
-          <div className="navItem select" style={{ width: "2rem", height: "2rem", position: "absolute", left: "87%", top: "3%" }} onClick={() => {
+          <div className="navItem select" style={{ width: "2rem", height: "2rem", position: "absolute", left: "87%", top: "2.9%" }} onClick={() => {
             gun.get("userdb").once((data: any) => {
               if (search in data) {
                 setTagline("");
                 if (`${uname}&${search}` in gun.get("chatdb")) {
-                  
+                  setConversation(`${uname}&${search}`);
+                } else {
+                  gun.get("chatdb").put({ conversation: [] });
                 }
               } else {
                 setTagline("User does not exist.")
@@ -97,7 +101,18 @@ const Main: NextPage = () => {
           {messages}
         </div>
         <div>
-          <h1>{selection}</h1>
+          <h2 style={{ position: "absolute", left: "60%", top: "5%" }}>Conversations</h2>
+          <div style={{
+            display: "flex",
+            flexDirection: "column-reverse",
+            border: "0.1rem solid rgb(30, 30, 30)",
+            borderRadius: "1rem",
+            position: "absolute",
+            top: "15%",
+            left: "65%",
+          }}>
+            {conversation}
+          </div>
         </div>
       </div>
     );
