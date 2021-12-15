@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Gun from "gun";
 import { useState } from "react";
-import { getUnpackedSettings } from "http2";
 
 const Main: NextPage = () => {
   const gun = Gun();
