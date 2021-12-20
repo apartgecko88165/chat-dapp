@@ -4,9 +4,6 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Gun from "gun";
 
-// components
-import Background from "../../util/bg";
-
 const Main: NextPage = () => {
   const gun = Gun();
   const router = useRouter();
@@ -63,6 +60,7 @@ const Main: NextPage = () => {
                   setBanner("User already exists.");
                 } else {
                   userdb.get(uname).put({ id: uname, key: userPassword });
+                  userdb.get(uname).get("inbox").put([{ sender: "do not reply", content: "Welcome to the future!" }]);
                   router.push("/user/login");
                 }
               });

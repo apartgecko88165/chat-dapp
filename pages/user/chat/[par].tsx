@@ -19,12 +19,32 @@ const Main: NextPage = () => {
     netkey = data;
   });
 
-  var inbox: any = [{ the_team: "Welcome to Shift!" }];
+  var messages = <h3>Error loading messages</h3>;
+
+  gun.get("userdb").get(`${uname}`).get("inbox").put([{ sender: "do not reply", content: "Welcome to the future!" }])
+  
   gun.get("userdb").get(`${uname}`).get("inbox").once((data: any) => {
-    if (data["content"] != undefined) {
-      inbox = data;
+    try {
+      messages = data.map((msg: any) => (
+        <div key={msg.sender} className="select" onClick={() => setSelection(`${uname}&${msg.sender}`)}>
+          <h4><p style={{ fontWeight: "normal", display: "inline" }}>from</p> {msg.sender}</h4>
+          <div style={{
+            border: "0.5rem solid darkgray",
+            borderRadius: "1rem",
+            paddingLeft: "1.25rem",
+            backgroundColor: "lightgray",
+            width: "20rem",
+            wordWrap: "break-word"
+          }}><p>{msg.content}</p></div>
+        </div>
+      ));
+    }
+    catch (err) {
+      setTagline("An error occured when fetching messages.");
+      console.log(err);
     }
   });
+
   
   var [selection, setSelection] = useState("");
   const [search, setSearch] = useState("");
@@ -34,20 +54,6 @@ const Main: NextPage = () => {
   function handleSearchInput(event: any) {
     setSearch(event.target.value);
   }
-
-  var messages = inbox.map((msg: any) => (
-    <div key={msg.sender} className="select" onClick={() => setSelection(`${uname}&${msg.sender}`)}>
-      <h4><p style={{ fontWeight: "normal", display: "inline" }}>from</p> {msg.sender}</h4>
-      <div style={{
-        border: "0.5rem solid darkgray",
-        borderRadius: "1rem",
-        paddingLeft: "1.25rem",
-        backgroundColor: "lightgray",
-        width: "20rem",
-        wordWrap: "break-word"
-      }}><p>{msg.content}</p></div>
-    </div>
-  ));
 
   if (key === netkey) {
     return (
@@ -86,7 +92,7 @@ const Main: NextPage = () => {
                   gun.get("chatdb").put({ conversation: [] });
                 }
               } else {
-                setTagline("User does not exist.")
+                setTagline("User does not exist.");
               }
             })
           }}>
